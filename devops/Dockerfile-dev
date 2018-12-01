@@ -18,7 +18,10 @@ run pip3 install --upgrade pip; \
     pip3 install poetry
 
 copy ./pyproject.* /app/
-run poetry install
+run python3 -m venv venv; \
+    . /venv/bin/activate; \
+    poetry install; \
+    export PATH=$PATH:/app/venv/bin
 
 run apk del python3-dev \
             build-base \
