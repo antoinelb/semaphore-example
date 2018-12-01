@@ -1,5 +1,5 @@
 version: v1.0
-name: First pipeline example
+name: Pipeline example
 agent:
   machine:
     type: e1-standard-2
@@ -35,15 +35,10 @@ blocks:
             - echo "done."
   - name: "Build"
     task:
-      env_vars:
-        - name: APP_ENV
-          value: dev
       jobs:
       - name: Docker build
         commands:
           - checkout
-          - ls -1
-          - echo $APP_ENV
           - echo "Build docker image..."
           - docker build -t calculator -f devops/Dockerfile .
           - echo "Image built."
@@ -56,4 +51,4 @@ blocks:
             - checkout
             - echo "Running pytest..."
             - pytest -v --cov
-            - echo: "done."
+            - echo "done."
