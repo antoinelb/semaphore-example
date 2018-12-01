@@ -14,10 +14,10 @@ run apk update && \
                        openssl-dev \
                        curl
 
-run pip3 install --upgrade pip \
+run pip3 install --upgrade pip; \
     pip3 install poetry
 
-run python3 -m venv venv \
+run python3 -m venv venv; \
     . venv/bin/activate
 
 copy ./pyproject.* /app/
