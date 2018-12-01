@@ -1,0 +1,8 @@
+[flake8]
+exclude = \
+  .git \
+  __pycache__ \
+  venv
+ignore = 
+  E203 \  # whitespace before ':'
+  W503    # linebreak before binary operator
