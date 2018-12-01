@@ -29,5 +29,17 @@ blocks:
         - name: Flake8
           commands:
             - docker run -t semaphore-example:v1 flake8 --statistics
+        - name: Mypy
+          commands:
+            - docker run -t semaphore-example:v1 mypy .
+        - name: Pylint
+          commands:
+            - docker run -t semaphore-example:v1 pylint src tests
+        - name: Bandit
+          commands:
+            - docker run -t semaphore-example:v1 bandit .
+        - name: Pytest
+          commands:
+            - docker run -t semaphore-example:v1 pytest -v --cov
       secrets:
         - name: docker-hub
