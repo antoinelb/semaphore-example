@@ -7,51 +7,25 @@ agent:
 blocks:
   - name: "Build"
     task:
-      env_vars:
-        - name: APP_ENV
-          value: prod
       jobs:
-      - name: Docker build
-        commands:
-          - checkout
-          - echo "Building docker image..."
-          - docker build -t semaphore-example -f devops/Dockerfile .
-          - echo "done"
-  - name: "Smoke tests"
+        - name: Docker build
+          commands:
+            - checkout
+            - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
+            - docker build -t semaphore-example:v1 -f devops/Dockerfile-dev .
+            - docker tag semaphore-example:v1 "$DOCKER_USERNAME"/semaphore-example:"$SEMAPHORE_GIT_BRANCH"
+            - docker push "$DOCKER_USERNAME"/semaphore-example:"$SEMAPHORE_GIT_SHA"-"SEMAPHORE_WORKFLOW_ID"
+      secrets:
+        - name: docker-hub
+  - name: "Tests"
     task:
+      prologue:
+        commands:
+          - checkout
+          - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
+          - docker pull "$DOCKER_USERNAME"/semaphore-example:"$SEMAPHORE_GIT_BRANCH"
+          - docker build --cache-from "$DOCKER_USERNAME"/semaphore-example:"$SEMAPHORE_GIT_BRANCH" -t semaphore-example:v1 -f devops/Dockerfile-dev .
       jobs:
-      - name: Smoke
-        commands:
-          - checkout
-          - echo "make smoke"
-  - name: "Unit tests"
-    task:
-      jobs:
-      - name: RSpec
-        commands:
-          - checkout
-          - echo "make rspec"
-      - name: Lint code
-        commands:
-          - checkout
-          - echo "make lint"
-      - name: Check security
-        commands:
-          - checkout
-          - echo "make security"
-  - name: "Integration tests"
-    task:
-      jobs:
-      - name: Cucumber
-        commands:
-          - checkout
-          - echo "make cucumber"
-  - name: "Push Image"
-    task:
-      jobs:
-      - name: Push
-        commands:
-          - checkout
-          - echo "Pushing docker image..."
-          - docker push antoinelb/semaphore-example:latest
-          - echo "done"
+        - name: Flake8
+          commands:
+            - docker run -t semaphore-example:v1 flake8 --statistics
