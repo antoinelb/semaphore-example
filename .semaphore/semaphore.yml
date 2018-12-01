@@ -29,3 +29,5 @@ blocks:
         - name: Flake8
           commands:
             - docker run -t semaphore-example:v1 flake8 --statistics
+      secrets:
+        - name: docker-hub
