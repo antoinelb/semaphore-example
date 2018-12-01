@@ -13,24 +13,28 @@ blocks:
           commands:
             - checkout
             - echo "Running flake8..."
+            - pip3 install flake8
             - flake8 --statistics
             - echo "done."
         - name: Mypy
           commands:
             - checkout
             - echo "Running mypy..."
+            - pip3 install mypy
             - mypy .
             - echo "done."
         - name: Pylint
           commands:
             - checkout
             - echo "Running pylint..."
+            - pip3 install pylint
             - pylint src tests
             - echo "done."
         - name: Bandit
           commands:
             - checkout
             - echo "Running bandit..."
+            - pip3 install bandit
             - bandit .
             - echo "done."
   - name: "Build"
@@ -50,5 +54,6 @@ blocks:
           commands:
             - checkout
             - echo "Running pytest..."
+            - pip3 install pytest pytest-cov
             - pytest -v --cov
             - echo "done."
