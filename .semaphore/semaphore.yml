@@ -1,5 +1,5 @@
 version: v1.0
-name: First pipeline example
+name: Pipeline example
 agent:
   machine:
     type: e1-standard-2
@@ -14,9 +14,8 @@ blocks:
       - name: Docker build
         commands:
           - checkout
-          - ls -1
-          - echo $APP_ENV
-          - echo "Docker build..."
+          - echo "Building docker image..."
+          - docker build -t semaphore-example -f devops/Dockerfile .
           - echo "done"
   - name: "Smoke tests"
     task:
@@ -53,4 +52,6 @@ blocks:
       - name: Push
         commands:
           - checkout
-          - echo "make docker.push"
+          - echo "Pushing docker image..."
+          - docker push antoinelb/semaphore-example:latest
+          - echo "done"
