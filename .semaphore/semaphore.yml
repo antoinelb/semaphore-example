@@ -12,6 +12,7 @@ blocks:
         - name: Flake8
           commands:
             - checkout
+            - apt install python3-pip
             - echo "Running flake8..."
             - pip3 install flake8
             - flake8 --statistics
@@ -19,6 +20,7 @@ blocks:
         - name: Mypy
           commands:
             - checkout
+            - apt install python3-pip
             - echo "Running mypy..."
             - pip3 install mypy
             - mypy .
@@ -26,6 +28,7 @@ blocks:
         - name: Pylint
           commands:
             - checkout
+            - apt install python3-pip
             - echo "Running pylint..."
             - pip3 install pylint
             - pylint src tests
@@ -33,6 +36,7 @@ blocks:
         - name: Bandit
           commands:
             - checkout
+            - apt install python3-pip
             - echo "Running bandit..."
             - pip3 install bandit
             - bandit .
@@ -53,6 +57,7 @@ blocks:
         - name: Pytest
           commands:
             - checkout
+            - apt install python3-pip
             - echo "Running pytest..."
             - pip3 install pytest pytest-cov
             - pytest -v --cov
