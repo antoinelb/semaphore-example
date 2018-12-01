@@ -3,6 +3,7 @@ from alpine:latest
 
 run mkdir /app
 workdir /app
+env PATH="/app/venv/bin:${PATH}"
 
 run apk update && \
     apk add --no-cache python3 \
@@ -19,9 +20,8 @@ run pip3 install --upgrade pip; \
 
 copy ./pyproject.* /app/
 run python3 -m venv venv; \
-    . /venv/bin/activate; \
-    poetry install; \
-    export PATH=$PATH:/app/venv/bin
+    . venv/bin/activate; \
+    poetry install
 
 run apk del python3-dev \
             build-base \
