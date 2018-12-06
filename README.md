@@ -1,4 +1,4 @@
-# Example of use of CircleCI
+# Example of use of Semaphore CI
 
 ## Getting started
 
